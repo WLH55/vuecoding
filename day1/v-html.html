@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div id = "app">
+    <!-- v-html指令 -->
+    {{ message }}
+    <p v-html="message"></p>
+</div>
+<!--引入vue.js-->
+<script src="../script/vue.js"></script>
+
+<script>
+    //创建一个vue实例
+    const app = new Vue({
+        el: '#app',
+        data: {
+            message: '<h1>hello qx</h1>'
+        }
+    })
+</script>
+</body>
+</html>

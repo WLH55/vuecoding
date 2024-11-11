@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id = "app">
+    {{ message }}
+    <h1>{{ message.toUpperCase()}}</h1>
+    <h2>{{ message + '你好' }}</h2>
+    <h3>{{ age >= 18 ? '成年' : '未成年' }}</h3>
+    <h4>{{ friend.name }}</h4>
+    <h5>{{ friend.age }}</h5>
+    <h6>{{ message }}</h6>
+</div>
+<!--引入vue.js-->
+<script src="../script/vue.js"></script>
+
+<script>
+    Vue.config.devtools = true;
+
+    //创建一个vue实例
+    const app = new Vue({
+        el: '#app',
+        data: {
+            message: 'Hello qx',
+            age: 18,
+            friend: {
+                name: '文千喜',
+                age: 18
+            }
+        }
+    })
+</script>
+
+</body>
+</html>

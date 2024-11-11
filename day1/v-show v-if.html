@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div id = "app">
+    <!-- v-show指令 -->
+    <h1 v-show="isShow">Hello qx</h1>
+    <h2 v-show="isShow">Hello qx</h2>
+    <h3 v-show="isShow">Hello qx</h3>
+    <h4 v-show="isShow">Hello qx</h4>
+    <h5 v-show="isShow">Hello qx</h5>
+    <h6 v-show="isShow">Hello qx</h6>
+    <button @click="changeShow">切换显示状态</button>
+<!--    v-if-->
+
+    <p v-if="isShow">hello</p>
+</div>
+<!--引入vue.js-->
+<script src="../script/vue.js"></script>
+
+<script>
+    //创建一个vue实例
+    const app = new Vue({
+        el: '#app',
+        data: {
+            isShow: true
+        },
+        methods: {
+            changeShow() {
+                this.isShow = !this.isShow;
+            }
+        }
+    })
+</script>
+
+</body>
+</html>

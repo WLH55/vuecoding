@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div id = "app">
+
+    <!-- v-bind指令 -->
+    <img :src="imgUrl" alt="">
+
+    <a :href="url">百度</a>
+
+    <button :disabled="isDisabled">按钮</button>
+
+    <p v-bind:class="className">hello qx</p>
+</div>
+<!--引入vue.js-->
+<script src="../script/vue.js"></script>
+
+<script>
+    //创建一个vue实例
+    const app = new Vue({
+        el: '#app',
+        data: {
+            imgUrl: 'https://www.baidu.com/img/bd_logo1.png',
+            url: 'https://www.baidu.com',
+            isDisabled: true,
+            className: 'red'
+        }
+    })
+</script>
+
+</body>
+</html>

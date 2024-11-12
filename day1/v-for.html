@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div id = "app">
+    <!-- v-for指令 -->
+    <ul>
+        <li v-for="item in list"> {{item}}</li>
+    </ul>
+    <ul>
+        <li v-for="(ss,nn) in list">
+            {{ss}} -- {{nn}}
+        </li>
+    </ul>
+
+
+</div>
+<!--引入vue.js-->
+<script src="../script/vue.js"></script>
+
+<script>
+    //创建一个vue实例
+    const app = new Vue({
+        el: '#app',
+        data: {
+            list: [
+                '我要好好学习',
+                '我要天天向上',
+                '我要努力奋斗',
+                '哎呀好困啊',
+                '睡觉吧，明天继续努力'
+            ],
+
+
+        }
+    })
+</script>
+
+</body>
+</html>

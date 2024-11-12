@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div id = "app">
+
+  <button @click="count--">-</button>
+    {{ count }}
+    <button v-on:click='count++'>+</button>
+
+    <button @click="fn">点击我</button>
+
+    <p>银行卡余额 {{ money }}</p>
+    <button @click="buy(5)">可乐</button>
+    <button @click="buy(10)">咖啡</button>
+
+</div>
+<!--引入vue.js-->
+<script src="../script/vue.js"></script>
+
+<script>
+    //创建一个vue实例
+    const app = new Vue({
+        el: '#app',
+        data: {
+            count: 0,
+            money: 1000
+        },
+        methods: {
+            fn(){
+                alert('hello 千喜')
+            },
+            buy(price){
+                this.money -= price
+            }
+        }
+
+    })
+</script>
+
+</body>
+</html>

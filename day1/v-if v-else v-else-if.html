@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div id = "app">
+
+    <p v-if="gender === 1">性别 男</p>
+    <p v-else> 性别 女</p>
+
+    <span v-if = "score >= 90">成绩优秀</span>
+    <span v-else-if = "score >= 80">成绩良好</span>
+    <span v-else-if = "score >= 60">成绩合格</span>
+
+</div>
+<!--引入vue.js-->
+<script src="../script/vue.js"></script>
+
+<script>
+    //创建一个vue实例
+    const app = new Vue({
+        el: '#app',
+        data: {
+            gender: 2,
+            score: 80
+        },
+
+    })
+</script>
+
+</body>
+</html>

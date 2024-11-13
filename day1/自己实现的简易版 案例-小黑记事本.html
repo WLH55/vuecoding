@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+
+<div id = "app">
+<!--  添加功能-->
+  <input type="text" v-model="task" placeholder="请输入任务">
+  <button @click="add">添加任务</button>
+
+<!--  列表渲染功能-->
+<!--  在每个li后加一个删除的图标，点击删除-->
+  <ul>
+    <li v-for="(item,index) in list" :key="item.id">{{index + 1}} {{item.name}}
+    <button @click="del(item.id)">删除</button>
+    </li>
+  </ul>
+
+<!--  汇总和清空-->
+  <span>总共{{list.length}}</span>
+  <button @click="clear">清空</button>
+
+
+
+</div>
+<!--引入vue.js-->
+<script src="../script/vue.js"></script>
+
+<script>
+  //创建一个vue实例
+  const app = new Vue({
+    el: '#app',
+    data: {
+      list: [
+        {id: 1,name:'跑步二十分钟'},
+        {id: 2,name:'复习数组语法'},
+        {id: 3,name:'玩游戏一小时'},
+      ],
+      task: ''
+    },
+    methods: {
+      //添加任务
+      add(){
+        if(this.task.trim() !== ""){
+          const newItem = {
+            id: new Date() + 1,
+            name: this.task
+          }
+          this.list.push(newItem);
+          this.task = ''
+        }else{
+          alert('任务名称不能为空')
+        }
+
+
+      },
+
+      //清空任务
+      clear(){
+        this.list = []
+
+      },
+
+      //删除任务项
+      del(id){
+        this.list = this.list.filter(item => item.id !== id)
+
+      }
+
+
+
+
+    }
+  })
+</script>
+
+</body>
+</html>

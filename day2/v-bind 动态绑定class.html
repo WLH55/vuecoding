@@ -3,8 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+
+    <style>
+        .active{
+            color: red;
+        }
+    </style>
 </head>
 <body>
+
+<div id = "app">
+    <ul>
+        <li v-for="(item,index) in list" :key="item.id" @click="activeIndex = index">
+            <a :class="{active: index === activeIndex}" href="#">{{item.name}}</a>
+        </li>
+    </ul>
+
+
+
+</div>
+<!--引入vue.js-->
+<script src="../script/vue.js"></script>
+
+<script>
+    //创建一个vue实例
+    const app = new Vue({
+        el: '#app',
+        data: {
+            activeIndex: 0,
+            list: [
+                {id: 1,name:'京东秒杀'},
+                {id: 2,name:'每日特价'},
+                {id: 3,name:'品类秒杀'},
+            ],
+            task: ''
+        },
+        methods: {
+
+
+
+
+
+
+
+        }
+    })
+</script>
 
 </body>
 </html>

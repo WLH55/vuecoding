@@ -1,10 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <title>Title</title>
 </head>
 <body>
-$END$
+
+<div id = "app">
+
+  姓<input type="text" v-model="firstName">+<input type="text" v-model="lastName">名=<span >{{fullName}}</span>
+<br><br>
+
+<button @click="changeName">改名卡</button>
+
+
+</div>
+<!--引入vue.js-->
+<script src="../script/vue.js"></script>
+
+<script>
+    //创建一个vue实例
+    const app = new Vue({
+        el: '#app',
+        data: {
+            firstName: '文',
+            lastName: '千喜'
+
+
+        },
+
+        computed :{
+
+            // fullName(){
+            //     return this.firstName + this.lastName;
+            // } 这个等价于下面这个get
+            fullName: {
+                get () {
+                    return this.firstName + this.lastName;
+                },
+
+                set(value){
+                    this.firstName = value.slice(0,1);
+                    this.lastName = value.slice(1);
+                }
+            }
+
+
+        },
+        methods: {
+            changeName(){
+                this.fullName = '陈文龙'
+            }
+
+        }
+
+
+    })
+</script>
+
 </body>
 </html>

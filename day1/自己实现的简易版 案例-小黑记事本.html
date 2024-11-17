@@ -20,8 +20,11 @@
   </ul>
 
 <!--  汇总和清空-->
-  <span>总共{{list.length}}</span>
-  <button @click="clear">清空</button>
+  <footer v-show="list.length > 0">
+    <span>总共{{list.length}}</span>
+    <button @click="clear">清空</button>
+  </footer>
+
 
 
 
@@ -49,7 +52,7 @@
             id: new Date() + 1,
             name: this.task
           }
-          this.list.push(newItem);
+          this.list.unshift(newItem);
           this.task = ''
         }else{
           alert('任务名称不能为空')

@@ -1,10 +1,127 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <title>Title</title>
 </head>
 <body>
-$END$
+
+<div id = "app">
+<!--    成绩单表单渲染功能-->
+   <table border="4">
+       <caption>学生成绩表</caption> <!-- 表格标题 -->
+       <thead>
+        <tr>
+            <th>编号</th>
+            <th>科目</th>
+            <th>成绩</th>
+            <th>操作</th>
+        </tr>
+       </thead>
+       <tbody>
+
+       <tr v-for="(item,index) in list" :key="item.id">
+           <th>{{index + 1}}</th>
+           <th>{{item.subject}}</th>
+           <th>{{item.score}}</th>
+           <th>
+<!--               删除功能-->
+               <a href="" @click.prevent="del(item.id)">删除</a>
+           </th>
+
+       </tr>
+       </tbody>
+       <tfoot>
+       <tr>
+           <td colspan="4">总分：{{totalScore}}   平均分：{{averScore}}</td>
+       </tr>
+       </tfoot>
+   </table>
+    <br><br>
+<!--    添加成绩功能-->
+    科目: <input type="text" v-model.trim="subject"><br><br>
+    成绩: <input type="text" v-model.number="score"><br><br>
+    <button @click="add">添加</button>
+
+</div>
+<!--引入vue.js-->
+<script src="../script/vue.js"></script>
+
+<script>
+    //创建一个vue实例
+    const app = new Vue({
+        el: '#app',
+        data: {
+            list: [
+                {id: 1,subject:'语文',score: 100},
+                {id: 2,subject:'数学',score: 120},
+                {id: 3,subject:'英语',score: 100},
+            ],
+            subject: '',
+            score: ''
+        },
+
+        //计算总分和平均分功能
+        computed: {
+            totalScore(){
+                return this.list.reduce((sum,item) => sum + item.score,0)
+
+            },
+            averScore(){
+                if(this.list.length === 0){
+                    return 0;
+                }
+
+                let total = this.list.reduce((sum,item) => sum + item.score,0)
+                let len = this.list.length;
+                const averScore = total / len
+                return averScore.toFixed(2)
+
+            }
+
+
+        },
+        methods: {
+            //添加功能
+            add(){
+                if(!this.subject) {
+                    alert('请输入科目')
+                    return
+
+                }
+                if(typeof this.score !== "number"){
+                    alert('请输入正确的成绩')
+                    return
+                }
+                    const newItem = {
+                        id: new Date() + 1,
+                        subject: this.subject,
+                        score: this.score
+                    }
+                    this.list.push(newItem);
+                    this.subject = ''
+                    this.score = ''
+
+
+
+
+            },
+
+
+
+            //删除功能
+            del(id){
+                this.list = this.list.filter(item => item.id !== id)
+
+            },
+
+
+
+
+
+        }
+    })
+</script>
+
 </body>
 </html>

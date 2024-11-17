@@ -2,9 +2,51 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>$Title$</title>
+  <title>Title</title>
 </head>
 <body>
-$END$
+
+<div id = "app">
+
+  <ul>
+    <li v-for="item in list" >
+      {{item.name}}
+    </li>
+  </ul>
+  <span>总数{{totalCount}}</span>
+
+
+
+
+</div>
+<!--引入vue.js-->
+<script src="../script/vue.js"></script>
+
+<script>
+  //创建一个vue实例
+  const app = new Vue({
+    el: '#app',
+    data: {
+      list: [
+        {id: 1,name:'跑步二十分钟',num: 1},
+        {id: 2,name:'复习数组语法',num: 4},
+        {id: 3,name:'玩游戏一小时',num: 3},
+      ],
+      task: ''
+    },
+    computed :{
+      totalCount(){
+        return this.list.reduce((sum,item) => sum + item.num ,0);
+      }
+
+
+    },
+    methods: {
+
+    }
+
+  })
+</script>
+
 </body>
 </html>

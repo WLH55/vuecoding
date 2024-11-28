@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>WebSocket Demo</title>
+    <script>
+        var ws;
+
+        function connect() {
+            ws = new WebSocket("ws://localhost:8080/websocket");
+
+            ws.onopen = function () {
+                console.log('WebSocket 已经建立连接');
+                ws.send('你好 服务段，我是客户端，我已经和你建立连接');
+            };
+
+            ws.onmessage = function (event) {
+                console.log('我已收到来自服务端的消息', event.data);
+            };
+
+            ws.onerror = function (event) {
+                console.error('连接错误', event);
+            };
+
+            ws.onclose = function () {
+                console.log('连接关闭');
+            };
+        }
+
+        function sendMessage() {
+            var message = document.getElementById("message").value;
+            ws.send(message);
+        }
+    </script>
+</head>
+<body>
+<h1>WebSocket Demo</h1>
+<button onclick="connect()">连接 WebSocket</button>
+<br>
+<input type="text" id="message" placeholder="输入消息">
+<button onclick="sendMessage()">发送消息</button>
+</body>
+</html>

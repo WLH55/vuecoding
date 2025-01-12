@@ -636,7 +636,7 @@
   // multiple renders, cloning them avoids errors when DOM manipulations rely
   // on their elm reference.
   function cloneVNode(vnode) {
-      var cloned = new VNode(vnode.tag, vnode.data, 
+      var cloned = new VNode(vnode.tag, vnode.data,
       // #7975
       // clone children array to avoid mutating original in case of cloning
       // a child.
@@ -1850,7 +1850,7 @@
       }
   }
   // ref #5318
-  // necessary to ensure parent re-render when deep bindings like :style and
+  // necessary to ensure parent re-render when deep bindings like :styles and
   // :class are used on slot nodes
   function registerDeepBindings(data) {
       if (isObject(data.style)) {
@@ -2075,7 +2075,7 @@
       return data;
   }
 
-  function resolveScopedSlots(fns, res, 
+  function resolveScopedSlots(fns, res,
   // the following are added in 2.6
   hasDynamicKeys, contentHashKey) {
       res = res || { $stable: !hasDynamicKeys };
@@ -4134,7 +4134,7 @@
    */
   var Watcher = /** @class */ (function () {
       function Watcher(vm, expOrFn, cb, options, isRenderWatcher) {
-          recordEffectScope(this, 
+          recordEffectScope(this,
           // if the active effect scope is manually created (not a component scope),
           // prioritize it
           activeEffectScope && !activeEffectScope._vm
@@ -5044,14 +5044,14 @@
       var name = getComponentName(Ctor.options) || tag;
       var vnode = new VNode(
       // @ts-expect-error
-      "vue-component-".concat(Ctor.cid).concat(name ? "-".concat(name) : ''), data, undefined, undefined, undefined, context, 
+      "vue-component-".concat(Ctor.cid).concat(name ? "-".concat(name) : ''), data, undefined, undefined, undefined, context,
       // @ts-expect-error
       { Ctor: Ctor, propsData: propsData, listeners: listeners, tag: tag, children: children }, asyncFactory);
       return vnode;
   }
   function createComponentInstanceForVnode(
   // we know it's MountedComponentVNode but flow doesn't
-  vnode, 
+  vnode,
   // activeInstance in lifecycle state
   parent) {
       var options = {
@@ -6131,7 +6131,7 @@
 
   // these are reserved for web because they are directly compiled away
   // during template compilation
-  var isReservedAttr = makeMap('style,class');
+  var isReservedAttr = makeMap('styles,class');
   // attributes that should be using props for binding
   var acceptValue = makeMap('input,textarea,option,select,progress');
   var mustUseProp = function (tag, type, attr) {
@@ -6242,7 +6242,7 @@
       svg: 'http://www.w3.org/2000/svg',
       math: 'http://www.w3.org/1998/Math/MathML'
   };
-  var isHTMLTag = makeMap('html,body,base,head,link,meta,style,title,' +
+  var isHTMLTag = makeMap('html,body,base,head,link,meta,styles,title,' +
       'address,article,aside,footer,header,h1,h2,h3,h4,h5,h6,hgroup,nav,section,' +
       'div,dd,dl,dt,figcaption,figure,picture,hr,img,li,main,ol,p,pre,ul,' +
       'a,b,abbr,bdi,bdo,br,cite,code,data,dfn,em,i,kbd,mark,q,rp,rt,rtc,ruby,' +
@@ -6981,7 +6981,7 @@
       var hydrationBailed = false;
       // list of modules that can skip create hook during hydration because they
       // are already rendered on the client or has no need for initialization
-      // Note: style is excluded because it relies on initial clone for future
+      // Note: styles is excluded because it relies on initial clone for future
       // deep updates (#7063).
       var isRenderedModule = makeMap('attrs,class,staticClass,staticStyle,key');
       // Note: this is a browser-only function so we can assume elms are DOM nodes.
@@ -7139,7 +7139,7 @@
                   var oldElm = oldVnode.elm;
                   var parentElm = nodeOps.parentNode(oldElm);
                   // create new node
-                  createElm(vnode, insertedVnodeQueue, 
+                  createElm(vnode, insertedVnodeQueue,
                   // extremely rare edge case: do not insert if old element is in a
                   // leaving transition. Only happens when combining transition +
                   // keep-alive + HOCs. (#4590)
@@ -7518,7 +7518,7 @@
               if (c === 0x2f) {
                   // /
                   var j = i - 1;
-                  var p 
+                  var p
                   // find first non-whitespace prev char
                   = void 0;
                   // find first non-whitespace prev char
@@ -8042,7 +8042,7 @@
       target.addEventListener(name, handler, supportsPassive ? { capture: capture, passive: passive } : capture);
   }
   function remove(name, handler, capture, _target) {
-      (_target || target).removeEventListener(name, 
+      (_target || target).removeEventListener(name,
       //@ts-expect-error
       handler._wrapper || handler, capture);
   }
@@ -8189,10 +8189,10 @@
       });
       return res;
   });
-  // merge static and dynamic style data on the same vnode
+  // merge static and dynamic styles data on the same vnode
   function normalizeStyleData(data) {
       var style = normalizeStyleBinding(data.style);
-      // static style is pre-processed into an object during compilation
+      // static styles is pre-processed into an object during compilation
       // and is always a fresh object, so it's safe to merge into it
       return data.staticStyle ? extend(data.staticStyle, style) : style;
   }
@@ -8207,8 +8207,8 @@
       return bindingStyle;
   }
   /**
-   * parent component style should be after child's
-   * so that parent component's style could override it
+   * parent component styles should be after child's
+   * so that parent component's styles could override it
    */
   function getStyle(vnode, checkChild) {
       var res = {};
@@ -8291,10 +8291,10 @@
       var el = vnode.elm;
       var oldStaticStyle = oldData.staticStyle;
       var oldStyleBinding = oldData.normalizedStyle || oldData.style || {};
-      // if static style exists, stylebinding already merged into it when doing normalizeStyleData
+      // if static styles exists, stylebinding already merged into it when doing normalizeStyleData
       var oldStyle = oldStaticStyle || oldStyleBinding;
       var style = normalizeStyleBinding(vnode.data.style) || {};
-      // store normalized style under a different key for next diff
+      // store normalized styles under a different key for next diff
       // make sure to clone it if it's reactive, since the user likely wants
       // to mutate it.
       vnode.data.normalizedStyle = isDef(style.__ob__) ? extend({}, style) : style;
@@ -9441,10 +9441,10 @@
           {
               var res = parseText(staticStyle, options.delimiters);
               if (res) {
-                  warn("style=\"".concat(staticStyle, "\": ") +
+                  warn("styles=\"".concat(staticStyle, "\": ") +
                       'Interpolation inside attributes has been removed. ' +
                       'Use v-bind or the colon shorthand instead. For example, ' +
-                      'instead of <div style="{{ val }}">, use <div :style="val">.', el.rawAttrsMap['style']);
+                      'instead of <div styles="{{ val }}">, use <div :styles="val">.', el.rawAttrsMap['style']);
               }
           }
           el.staticStyle = JSON.stringify(parseStyleText(staticStyle));
@@ -9460,7 +9460,7 @@
           data += "staticStyle:".concat(el.staticStyle, ",");
       }
       if (el.styleBinding) {
-          data += "style:(".concat(el.styleBinding, "),");
+          data += "styles:(".concat(el.styleBinding, "),");
       }
       return data;
   }
@@ -9489,7 +9489,7 @@
   var isNonPhrasingTag = makeMap('address,article,aside,base,blockquote,body,caption,col,colgroup,dd,' +
       'details,dialog,div,dl,dt,fieldset,figcaption,figure,footer,form,' +
       'h1,h2,h3,h4,h5,h6,head,header,hgroup,hr,html,legend,li,menuitem,meta,' +
-      'optgroup,option,param,rp,rt,source,style,summary,tbody,td,tfoot,th,thead,' +
+      'optgroup,option,param,rp,rt,source,styles,summary,tbody,td,tfoot,th,thead,' +
       'title,tr,track');
 
   /**
@@ -9508,7 +9508,7 @@
   var comment = /^<!\--/;
   var conditionalComment = /^<!\[/;
   // Special Elements (can contain anything)
-  var isPlainTextElement = makeMap('script,style,textarea', true);
+  var isPlainTextElement = makeMap('script,styles,textarea', true);
   var reCache = {};
   var decodingMap = {
       '&lt;': '<',
@@ -9539,7 +9539,7 @@
       var last, lastTag;
       var _loop_1 = function () {
           last = html;
-          // Make sure we're not in a plaintext content element like script/style
+          // Make sure we're not in a plaintext content element like script/styles
           if (!lastTag || !isPlainTextElement(lastTag)) {
               var textEnd = html.indexOf('<');
               if (textEnd === 0) {
@@ -10544,7 +10544,7 @@
       }
       return map;
   }
-  // for script (e.g. type="x/template") or style, do not decode content
+  // for script (e.g. type="x/template") or styles, do not decode content
   function isTextTag(el) {
       return el.tag === 'script' || el.tag === 'style';
   }
@@ -11039,7 +11039,7 @@
               if (!el.plain || (el.pre && maybeComponent)) {
                   data = genData(el, state);
               }
-              var tag 
+              var tag
               // check if this is a component in <script setup>
               = void 0;
               // check if this is a component in <script setup>
@@ -11238,7 +11238,7 @@
       data = data.replace(/,$/, '') + '}';
       // v-bind dynamic argument wrap
       // v-bind with dynamic arguments must be applied using the same v-bind object
-      // merge helper so that class/style/mustUseProp attrs are handled correctly.
+      // merge helper so that class/styles/mustUseProp attrs are handled correctly.
       if (el.dynamicAttrs) {
           data = "_b(".concat(data, ",\"").concat(el.tag, "\",").concat(genProps(el.dynamicAttrs), ")");
       }

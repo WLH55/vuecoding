@@ -1,6 +1,7 @@
 <template>
-  <div>
-    <van-nav-bar title="会员登录" left-arrow @click-left="$router.go(-1)" />
+  <div class="login">
+    <van-nav-bar title="会员登录" left-arrow @click-left="$router.go(-1)"  />
+
     <div class="container">
       <div class="title">
         <h3>手机号登录</h3>
@@ -9,69 +10,139 @@
 
       <div class="form">
         <div class="form-item">
-          <input class="inp" maxlength="11" placeholder="请输入手机号码" type="text">
+          <input v-model="mobile" class="inp" maxlength="11" placeholder="请输入手机号码" type="text">
         </div>
         <div class="form-item">
-          <input class="inp" maxlength="5" placeholder="请输入图形验证码" type="text">
+          <input v-model="picCode" class="inp" maxlength="5" placeholder="请输入图形验证码" type="text">
           <img v-if="picUrl" :src="picUrl" @click="getPicCode" alt="">
         </div>
         <div class="form-item">
-          <input class="inp" placeholder="请输入短信验证码" type="text">
-          <button @click="getCode">{{ second === totalSecond ? '获取验证码' : second + '秒后重新获取' }}</button>
+          <input v-model="msgCode" class="inp" placeholder="请输入短信验证码" type="text">
+          <button @click="getCode">
+            {{ second === totalSecond ? '获取验证码' : second + '秒后重新发送'}}
+          </button>
         </div>
       </div>
 
-      <div class="login-btn">登录</div>
+      <div @click="login" class="login-btn">登录</div>
     </div>
   </div>
 </template>
 
 <script>
-import { getPicCode } from '@/api/login'
+import { codeLogin, getMsgCode, getPicCode } from '@/api/login'
+// import { Toast } from 'vant'
+
 export default {
   name: 'LoginPage',
-
   data () {
     return {
-      picUrl: '',
-      picKey: '',
+      picKey: '', // 将来请求传递的图形验证码唯一标识
+      picUrl: '', // 存储请求渲染的图片地址
       totalSecond: 60, // 总秒数
-      second: 60, // 倒计时的秒数
-      timer: null // 定时器 id
+      second: 60, // 当前秒数，开定时器对 second--
+      timer: null, // 定时器 id
+      mobile: '', // 手机号
+      picCode: '', // 用户输入的图形验证码
+      msgCode: '' // 短信验证码
     }
   },
-  created() {
-    this.getPicCode();
+  async created () {
+    this.getPicCode()
   },
-
   methods: {
+    // 获取图形验证码
+    // async getPicCode () {
+    //   const { data: { base64, key } } = await getPicCode()
+    //   this.picUrl = base64 // 存储地址
+    //   this.picKey = key // 存储唯一标识
+    //
+    //   // Toast('获取图形验证码成功')
+    //   // this.$toast('获取成功')
+    //   // this.$toast.success('成功文案')
+    // },
     async getPicCode () {
-      const { data: { base64, key } } = await getPicCode()
-      this.picUrl = base64
-      this.pickey = key
-      this.$toast('成功获取图形验证码')
+      const response = await getPicCode();
+      console.log('正确的返回数据:', response);
+
+      this.picUrl = response.base64; // 直接获取 base64
+      this.picKey = response.key; // 直接获取 key
+      // // 结构数据
+      // const { base64, key } = response.data
+      // this.picUrl = base64 // 存储地址
+      // this.picKey = key // 存储唯一标识
     },
-    async getCode(){
+
+    // 校验 手机号 和 图形验证码 是否合法
+    // 通过校验，返回true
+    // 不通过校验，返回false
+    validFn () {
+      if (!/^1[3-9]\d{9}$/.test(this.mobile)) {
+        this.$toast('请输入正确的手机号')
+        return false
+      }
+      if (!/^\w{4}$/.test(this.picCode)) {
+        this.$toast('请输入正确的图形验证码')
+        return false
+      }
+      return true
+    },
+
+    // 获取短信验证码
+    async getCode () {
+      if (!this.validFn()) {
+        // 如果没通过校验，没必要往下走了
+        return
+      }
+
+      // 当前目前没有定时器开着，且 totalSecond 和 second 一致 (秒数归位) 才可以倒计时
       if (!this.timer && this.second === this.totalSecond) {
+        // 发送请求
+        // 预期：希望如果响应的status非200，最好抛出一个promise错误，await只会等待成功的promise
+        await getMsgCode(this.picCode, this.picKey, this.mobile)
+
+        this.$toast('短信发送成功，注意查收')
+
         // 开启倒计时
         this.timer = setInterval(() => {
           this.second--
 
-          if (this.second < 1) {
+          if (this.second <= 0) {
             clearInterval(this.timer)
-            this.timer = null
-            this.second = this.totalSecond
+            this.timer = null // 重置定时器 id
+            this.second = this.totalSecond // 归位
           }
         }, 1000)
-
-        // 发送请求，获取验证码
-        this.$toast('发送成功，请注意查收')
       }
     },
-    destroyed () {
-      clearInterval(this.timer)
-    }
 
+    // 登录
+    async login () {
+      if (!this.validFn()) {
+        return
+      }
+
+      if (!/^\d{6}$/.test(this.msgCode)) {
+        this.$toast('请输入正确的手机验证码')
+        return
+      }
+
+      console.log('发送登录请求')
+
+      const res = await codeLogin(this.mobile, this.msgCode)
+      this.$store.commit('user/setUserInfo', res.data)
+      this.$toast('登录成功')
+
+      // 进行判断，看地址栏有无回跳地址
+      // 1. 如果有   => 说明是其他页面，拦截到登录来的，需要回跳
+      // 2. 如果没有 => 正常去首页
+      const url = this.$route.query.backUrl || '/'
+      this.$router.replace(url)
+    }
+  },
+  // 离开页面清除定时器
+  destroyed () {
+    clearInterval(this.timer)
   }
 }
 </script>
